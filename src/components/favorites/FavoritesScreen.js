@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
 
 import FavoritesEmptyState from './FavoritesEmptyState';
-import CoinsItem from 'credit/src/components/coins/CoinsItem';
+import CreditItem from 'credit/src/components/credit/CreditItem';
 
 import Colors from 'credit/src/res/colors';
 import Storage from 'credit/src/libs/storage';
@@ -53,7 +53,7 @@ class FavoritesScreen extends Component {
           <FlatList
             data={favorites}
             renderItem={({item}) => (
-              <CoinsItem item={item} onPress={() => this.handlePress(item)} />
+              <CreditItem item={item} onPress={() => this.handlePress(item)} />
             )}
           />
         ) : null}

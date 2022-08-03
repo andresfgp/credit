@@ -1,20 +1,11 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import {View, Text, Pressable, Image, StyleSheet, Platform} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import Colors from 'credit/src/res/colors';
 
-const CoinsItem = ({item, onPress}) => {
-  // eslint-disable-next-line no-undef
-  getImgArrow = () => {
-    if (item.percent_change_1h > 0) {
-      return require('credit/src/assets/arrow_up.png');
-    } else {
-      return require('credit/src/assets/arrow_down.png');
-    }
-  };
-
+const CreditItem = ({item}) => {
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.row}>
         <Text style={styles.symbolText}>{item.symbol}</Text>
         <Text style={styles.nameText}>{item.name}</Text>
@@ -23,9 +14,8 @@ const CoinsItem = ({item, onPress}) => {
 
       <View style={styles.row}>
         <Text style={styles.percentText}>{item.percent_change_1h}</Text>
-        <Image style={styles.imgIcon} source={getImgArrow()} />
       </View>
-    </Pressable>
+    </View>
   );
 };
 
@@ -68,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CoinsItem;
+export default CreditItem;

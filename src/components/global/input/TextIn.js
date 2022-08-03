@@ -2,21 +2,23 @@ import React, {Component} from 'react';
 import {TextInput, Platform, View, StyleSheet} from 'react-native';
 import Colors from 'credit/src/res/colors';
 
-class CoinsSearch extends Component {
+class TextIn extends Component {
   state = {
-    query: '',
+    input: '',
   };
 
-  handleText = query => {
-    this.setState({query});
+  handleText = input => {
+    const {state} = this.props;
+    this.setState({input});
 
     if (this.props.onChange) {
-      this.props.onChange(query);
+      this.props.onChange(input, state);
     }
   };
 
   render() {
-    const {query} = this.state;
+    const {input} = this.state;
+    const {placeholder} = this.props;
 
     return (
       <View>
@@ -24,14 +26,14 @@ class CoinsSearch extends Component {
           // eslint-disable-next-line no-sparse-arrays
           style={[
             styles.textInput,
-            Platform.OS == 'ios'
+            Platform.OS === 'ios'
               ? styles.textInputIOS
               : styles.textInputAndroid,
             ,
           ]}
           onChangeText={this.handleText}
-          value={query}
-          placeholder="Search coin"
+          value={input}
+          placeholder={placeholder}
           placeholderTextColor="#fff"
         />
       </View>
@@ -56,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CoinsSearch;
+export default TextIn;
