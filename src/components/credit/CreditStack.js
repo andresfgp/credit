@@ -16,7 +16,7 @@ const CreditStack = () => {
         },
         headerTintColor: Colors.white,
       }}>
-      <Stack.Screen name="StackCredit" component={CreditScreen} />
+      <Stack.Screen name="Simulador de credito" component={CreditScreen} />
 
       <Stack.Screen name="CoinDetail" component={CoinDetailScreen} />
     </Stack.Navigator>

@@ -19,7 +19,7 @@ const App = () => {
           },
         }}>
         <Tabs.Screen
-          name="Credit"
+          name="Credito"
           component={CreditStack}
           options={{
             tabBarIcon: ({size, color}) => (

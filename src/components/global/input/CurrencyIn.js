@@ -4,7 +4,7 @@ import Colors from 'credit/src/res/colors';
 import CurrencyInput from 'react-native-currency-input';
 
 function CurrencyIn(props) {
-  const {placeholder, state, prefix} = props;
+  const {placeholder, state, prefix, precision, delimiter, maxValue} = props;
   const [value, setValue] = React.useState(0); // can also be null
 
   const handleText = input => {
@@ -25,9 +25,10 @@ function CurrencyIn(props) {
         value={value}
         onChangeValue={setValue}
         prefix={prefix}
-        delimiter=","
+        delimiter={delimiter}
+        maxValue={maxValue}
         separator="."
-        precision={2}
+        precision={precision}
         placeholder={placeholder}
         placeholderTextColor="#fff"
         onChangeText={handleText}
