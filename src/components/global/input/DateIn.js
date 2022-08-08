@@ -30,11 +30,11 @@ function DateIn(props) {
               height: 46,
               backgroundColor: 'rgba(0, 0, 0, 0.2)',
               borderWidth: 0,
-              borderRadius: 8
+              borderRadius: 8,
             },
-            dateText:{
-              color: '#fff'
-            }
+            dateText: {
+              color: '#fff',
+            },
           }}
           onDateChange={date => {
             setDate(date);
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     width: '95%',
     paddingLeft: 16,
     paddingTop: 10,
-
   },
 });
 
