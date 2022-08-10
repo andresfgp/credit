@@ -4,10 +4,10 @@ import {View, Text, StyleSheet, Platform} from 'react-native';
 import Colors from 'credit/src/res/colors';
 
 const CreditItem = ({item}) => {
+  console.log('item', item);
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.symbolText}>{item.symbol}</Text>
         <Text style={styles.nameText}>{item.name}</Text>
         <Text style={styles.priceText}>{`$${item.price_usd}`}</Text>
       </View>

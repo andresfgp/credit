@@ -1,19 +1,17 @@
+/* eslint-disable no-bitwise */
 import React from 'react';
-import {Text, View, FlatList, StyleSheet} from 'react-native';
-import CreditItem from './CreditItem';
-import TextIn from '../global/input/TextIn';
-import DateIn from '../global/input/DateIn';
-import CurrencyIn from '../global/input/CurrencyIn';
+import {Text, View, StyleSheet} from 'react-native';
+import GlobalInputText from '../global/input/Text';
+import GlobalInputDate from '../global/input/Date';
+import GlobalInputCurrency from '../global/input/Currency';
 import Colors from 'credit/src/res/colors';
 import {Stack, Button} from '@react-native-material/core';
 import {useForm, Controller} from 'react-hook-form';
+import GlobalTable from '../global/table/table';
 
 function CreditScreen(props) {
-  const handlePress = coin => {
-    props.navigation.navigate('CoinDetail', {coin});
-  };
-
-  const credit = [];
+  const [credit, setCredit] = React.useState([]);
+  const tableHead = ['Couta', 'Intereses', 'Head3', 'Head4'];
 
   const {
     control,
@@ -29,7 +27,52 @@ function CreditScreen(props) {
       loading: false,
     },
   });
-  const onSubmit = data => console.log(data);
+  const onSubmit = async data => {
+    setCredit([]);
+    console.log(data.creditValue.slice(1, -1), data.monthlyRate);
+    const creditTerm = Number(data.creditTerm);
+    const pv = Number(data.creditValue.replace(/[^0-9.-]+/g, ''));
+    const rt = Number(data.monthlyRate.replace(/[^0-9.-]+/g, '') / 100);
+    const Tn = Number(data.creditTerm);
+
+    const pmt = PMT(rt, Tn, pv, 0, 0).toFixed(2);
+    for (let n = 0; n < creditTerm; n++) {
+      const ipmt = Math.abs(IPMT(pv, pmt, rt, n).toFixed(2)).toLocaleString(
+        'en-US',
+        {
+          style: 'currency',
+          currency: 'USD',
+        },
+      );
+      const table = [n + 1, ipmt, '2', '2'];
+      setCredit(data => [...data, table]);
+    }
+  };
+
+  function PMT(rt, Tn, pv, fv, type) {
+    var pmt, pvif;
+
+    fv || (fv = 0);
+    type || (type = 0);
+
+    if (rt === 0) {
+      return -(pv + fv) / Tn;
+    }
+
+    pvif = Math.pow(1 + rt, Tn);
+    pmt = (-rt * (pv * pvif + fv)) / (pvif - 1);
+
+    if (type === 1) {
+      pmt /= 1 + rt;
+    }
+
+    return pmt;
+  }
+
+  function IPMT(pv, pmt, rt, n) {
+    let tmp = Math.pow(1 + rt, n);
+    return 0 - (pv * tmp * rt + pmt * (tmp - 1));
+  }
 
   return (
     <View style={styles.container}>
@@ -40,7 +83,7 @@ function CreditScreen(props) {
           required: true,
         }}
         render={({field: {onChange}}) => (
-          <TextIn
+          <GlobalInputText
             placeholder="Ingresar nombre crédito"
             onChange={onChange}
             error={errors.creditName}
@@ -58,7 +101,7 @@ function CreditScreen(props) {
               required: true,
             }}
             render={({field: {onChange}}) => (
-              <CurrencyIn
+              <GlobalInputCurrency
                 prefix="$"
                 precision={2}
                 maxValue={1000000000}
@@ -79,7 +122,7 @@ function CreditScreen(props) {
               required: true,
             }}
             render={({field: {onChange}}) => (
-              <CurrencyIn
+              <GlobalInputCurrency
                 prefix="%"
                 precision={1}
                 maxValue={100}
@@ -103,7 +146,7 @@ function CreditScreen(props) {
               required: true,
             }}
             render={({field: {onChange}}) => (
-              <CurrencyIn
+              <GlobalInputCurrency
                 state="creditTerm"
                 precision={0}
                 maxValue={1000}
@@ -124,23 +167,25 @@ function CreditScreen(props) {
               required: true,
             }}
             render={({field: {onChange}}) => (
-              <DateIn onChange={onChange} error={errors.startDateCredit} />
+              <GlobalInputDate
+                onChange={onChange}
+                error={errors.startDateCredit}
+              />
             )}
             name="startDateCredit"
           />
         </View>
       </View>
 
-      <Stack fill center spacing={4}>
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
+      <Stack center spacing={2}>
+        <Button
+          style={styles.btn}
+          title="Save"
+          onPress={handleSubmit(onSubmit)}
+        />
       </Stack>
 
-      <FlatList
-        data={credit}
-        renderItem={({item}) => (
-          <CreditItem item={item} onPress={() => handlePress(item)} />
-        )}
-      />
+      <GlobalTable tableHead={tableHead} tableData={credit} />
     </View>
   );
 }
@@ -167,14 +212,7 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   btn: {
-    padding: 8,
-    backgroundColor: 'blue',
-    borderRadius: 8,
     margin: 16,
-  },
-  btnText: {
-    color: '#fff',
-    textAlign: 'center',
   },
   loader: {
     marginTop: 60,

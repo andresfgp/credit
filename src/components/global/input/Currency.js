@@ -3,7 +3,7 @@ import {Platform, View, StyleSheet, Text} from 'react-native';
 import Colors from 'credit/src/res/colors';
 import CurrencyInput from 'react-native-currency-input';
 
-function CurrencyIn(props) {
+function GlobalInputCurrency(props) {
   const {placeholder, prefix, precision, delimiter, maxValue, error} = props;
   const [value, setValue] = React.useState(null); // can also be null
 
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CurrencyIn;
+export default GlobalInputCurrency;

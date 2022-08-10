@@ -2,7 +2,7 @@ import React from 'react';
 import {TextInput, Platform, View, StyleSheet, Text} from 'react-native';
 import Colors from 'credit/src/res/colors';
 
-function TextIn(props) {
+function GlobalInputText(props) {
   const [value, setValue] = React.useState(null); // can also be null
 
   const handleText = input => {
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextIn;
+export default GlobalInputText;

@@ -3,7 +3,7 @@ import {View, StyleSheet, Text, SafeAreaView} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import {LogBox} from 'react-native';
 
-function DateIn(props) {
+function GlobalInputDate(props) {
   const {error} = props;
 
   const [date, setDate] = React.useState(new Date().toISOString().slice(0, 10));
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DateIn;
+export default GlobalInputDate;
