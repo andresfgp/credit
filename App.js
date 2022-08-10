@@ -5,10 +5,18 @@ import CreditStack from 'credit/src/components/credit/CreditStack';
 import FavoritesStack from 'credit/src/components/favorites/FavoritesStack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Colors from 'credit/src/res/colors';
+import {LogBox} from 'react-native';
 
 const Tabs = createBottomTabNavigator();
 
 const App = () => {
+  React.useEffect(() => {
+    LogBox.ignoreLogs([
+      'Animated: `useNativeDriver`',
+      'Invalid prop textStyle of type array supplied to Cell',
+    ]);
+  }, []);
+
   return (
     <NavigationContainer>
       <Tabs.Navigator
