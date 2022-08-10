@@ -12,6 +12,7 @@ import Formulas from '../../res/formulas';
 
 function CreditScreen(props) {
   const [credit, setCredit] = React.useState([]);
+  const [loading, setLoading] = React.useState();
   const [newCredit, setNewCredit] = React.useState(true);
   const tableHead = [
     'Couta',
@@ -48,7 +49,6 @@ function CreditScreen(props) {
   });
   const onSubmit = async data => {
     setCredit([]);
-    setNewCredit(false);
     const creditTerm = Number(data.creditTerm);
     const pv = Number(data.creditValue.replace(/[^0-9.-]+/g, ''));
     const rate = Number(data.monthlyRate.replace(/[^0-9.-]+/g, '') / 100);
@@ -63,7 +63,6 @@ function CreditScreen(props) {
       const ppmt = Formulas.PPMT(rate, per + 1, nper, pv, 0, 0);
       arrayPPMT.push(ppmt);
       const creditTotal = pv + reduceSum(arrayPPMT);
-      console.log(data.startDateCredit);
       const date = new Date(data.startDateCredit);
       date.setMonth(date.getMonth() + per);
       const table = [
@@ -74,6 +73,10 @@ function CreditScreen(props) {
         convertToCurrency(creditTotal),
       ];
       setCredit(oldCredit => [...oldCredit, table]);
+      if (per === creditTerm - 1) {
+        setNewCredit(false);
+        setLoading(false);
+      }
     }
   };
 
@@ -94,120 +97,130 @@ function CreditScreen(props) {
 
   return (
     <View style={styles.container}>
-      {newCredit ? (
-        <Animated.View
-          style={{
-            opacity: fadeAnim,
-          }}>
-          <Text style={styles.inputText}>Nombre de Credito *</Text>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange}}) => (
-              <GlobalInputText
-                placeholder="Ingresar nombre crédito"
-                onChange={onChange}
-                error={errors.creditName}
-              />
-            )}
-            name="creditName"
-          />
-          <View style={styles.row}>
-            <View style={styles.col}>
-              <Text style={styles.inputText}>Valor de crédito *</Text>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange}}) => (
-                  <GlobalInputCurrency
-                    prefix="$"
-                    precision={2}
-                    maxValue={1000000000}
-                    delimiter=","
-                    placeholder="$0.00"
-                    onChange={onChange}
-                    error={errors.creditValue}
-                  />
-                )}
-                name="creditValue"
-              />
-            </View>
-            <View style={styles.col}>
-              <Text style={styles.inputText}>Tasa de intéres mensual *</Text>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange}}) => (
-                  <GlobalInputCurrency
-                    prefix="%"
-                    precision={1}
-                    maxValue={100}
-                    delimiter=","
-                    placeholder="%0.0"
-                    onChange={onChange}
-                    error={errors.monthlyRate}
-                  />
-                )}
-                name="monthlyRate"
-              />
-            </View>
+      <Animated.View
+        style={{
+          opacity: fadeAnim,
+        }}>
+        {newCredit && (
+          <>
+            <Text style={styles.inputText}>Nombre de Credito *</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange}}) => (
+                <GlobalInputText
+                  placeholder="Ingresar nombre crédito"
+                  onChange={onChange}
+                  error={errors.creditName}
+                />
+              )}
+              name="creditName"
+            />
+          </>
+        )}
+        <View style={styles.row}>
+          <View style={styles.col}>
+            <Text style={styles.inputText}>Valor de crédito *</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange}}) => (
+                <GlobalInputCurrency
+                  prefix="$"
+                  precision={2}
+                  maxValue={1000000000}
+                  delimiter=","
+                  placeholder="$0.00"
+                  onChange={onChange}
+                  error={errors.creditValue}
+                />
+              )}
+              name="creditValue"
+            />
           </View>
-          <View style={styles.row}>
-            <View style={styles.col}>
-              <Text style={styles.inputText}>Plazo crédito en meses *</Text>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange}}) => (
-                  <GlobalInputCurrency
-                    state="creditTerm"
-                    precision={0}
-                    maxValue={1000}
-                    delimiter=""
-                    placeholder="Ingresar valor"
-                    onChange={onChange}
-                    error={errors.creditTerm}
-                  />
-                )}
-                name="creditTerm"
-              />
-            </View>
-            <View style={styles.col}>
-              <Text style={styles.inputText}>Fecha inicio crédito</Text>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange}}) => (
-                  <GlobalInputDate
-                    onChange={onChange}
-                    error={errors.startDateCredit}
-                  />
-                )}
-                name="startDateCredit"
-              />
-            </View>
+          <View style={styles.col}>
+            <Text style={styles.inputText}>Tasa de intéres mensual *</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange}}) => (
+                <GlobalInputCurrency
+                  prefix="%"
+                  precision={1}
+                  maxValue={100}
+                  delimiter=","
+                  placeholder="%0.0"
+                  onChange={onChange}
+                  error={errors.monthlyRate}
+                />
+              )}
+              name="monthlyRate"
+            />
           </View>
-          <Stack center spacing={2}>
+        </View>
+        <View style={styles.row}>
+          <View style={styles.col}>
+            <Text style={styles.inputText}>Plazo crédito en meses *</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange}}) => (
+                <GlobalInputCurrency
+                  state="creditTerm"
+                  precision={0}
+                  maxValue={1000}
+                  delimiter=""
+                  placeholder="Ingresar valor"
+                  onChange={onChange}
+                  error={errors.creditTerm}
+                />
+              )}
+              name="creditTerm"
+            />
+          </View>
+          <View style={styles.col}>
+            <Text style={styles.inputText}>Fecha inicio crédito</Text>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange}}) => (
+                <GlobalInputDate
+                  onChange={onChange}
+                  error={errors.startDateCredit}
+                />
+              )}
+              name="startDateCredit"
+            />
+          </View>
+        </View>
+        <Stack center direction="row" spacing={20}>
+          {!newCredit && (
             <Button
               style={styles.btn}
-              title="Save"
-              onPress={handleSubmit(onSubmit)}
+              title="Nuevo"
+              onPress={() => setNewCredit(true)}
             />
-          </Stack>
-        </Animated.View>
-      ) : (
-        <GlobalTable state={state} tableData={credit} />
-      )}
+          )}
+          <Button
+            style={styles.btn}
+            title="Save"
+            loading={loading}
+            loadingIndicatorPosition="overlay"
+            onPress={handleSubmit(onSubmit)}
+          />
+        </Stack>
+      </Animated.View>
+      {!newCredit && <GlobalTable state={state} tableData={credit} />}
     </View>
   );
 }
