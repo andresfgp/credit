@@ -53,9 +53,8 @@ export default function GlobalTable(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     paddingTop: 30,
-    backgroundColor: 'transparent',
+    padding: 18,
   },
   head: {
     height: 50,

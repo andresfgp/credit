@@ -14,14 +14,13 @@ function CreditScreen(props) {
   const [credit, setCredit] = React.useState([]);
   const [loading, setLoading] = React.useState();
   const [newCredit, setNewCredit] = React.useState(true);
-  const tableHead = [
-    'Couta',
-    'Fecha Pago',
-    'Intereses',
-    'Abono capital',
-    'Saldo credito',
+  const tableHead = ['#', 'Intereses', 'Abono capital', 'Saldo credito'];
+  const widthArr = [
+    parseFloat('30%'),
+    parseFloat('100%'),
+    parseFloat('100%'),
+    parseFloat('120%'),
   ];
-  const widthArr = [60, 80, 100, 100, 100];
   const state = {tableHead, widthArr};
 
   const fadeAnim = React.useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
@@ -67,7 +66,6 @@ function CreditScreen(props) {
       date.setMonth(date.getMonth() + per);
       const table = [
         per + 1,
-        date.toISOString().slice(0, 10),
         convertToCurrency(ipmt),
         convertToCurrency(ppmt),
         convertToCurrency(creditTotal),
@@ -152,10 +150,10 @@ function CreditScreen(props) {
               render={({field: {onChange}}) => (
                 <GlobalInputCurrency
                   prefix="%"
-                  precision={1}
+                  precision={2}
                   maxValue={100}
                   delimiter=","
-                  placeholder="%0.0"
+                  placeholder="%0.00"
                   onChange={onChange}
                   error={errors.monthlyRate}
                 />
@@ -220,7 +218,9 @@ function CreditScreen(props) {
           />
         </Stack>
       </Animated.View>
-      {!newCredit && <GlobalTable state={state} tableData={credit} />}
+      {!newCredit && (
+        <GlobalTable style={styles.table} state={state} tableData={credit} />
+      )}
     </View>
   );
 }
@@ -239,6 +239,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  table: {
+    marginBottom: 10,
   },
   row: {
     flexDirection: 'row',
