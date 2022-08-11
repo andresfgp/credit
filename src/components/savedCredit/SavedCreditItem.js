@@ -1,21 +1,19 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import {View, Text, Pressable, Image, StyleSheet, Platform} from 'react-native';
 import Colors from 'credit/src/res/colors';
 
-const CreditItem = ({item}) => {
-  console.log('item', item);
+const SavedCreditItem = ({item, onPress}) => {
   return (
-    <View style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.nameText}>{item.name}</Text>
-        <Text style={styles.priceText}>{`$${item.price_usd}`}</Text>
+        <Text style={styles.nameText}>{item.creditName}</Text>
       </View>
 
       <View style={styles.row}>
-        <Text style={styles.percentText}>{item.percent_change_1h}</Text>
+        <Text style={styles.percentText}>{item.creditValue}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -58,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreditItem;
+export default SavedCreditItem;

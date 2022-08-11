@@ -2,7 +2,7 @@ import React from 'react';
 import {Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import CreditStack from 'credit/src/components/credit/CreditStack';
-import FavoritesStack from 'credit/src/components/favorites/FavoritesStack';
+import SavedCreditStack from 'credit/src/components/savedCredit/SavedCreditStack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Colors from 'credit/src/res/colors';
 import {LogBox} from 'react-native';
@@ -27,7 +27,7 @@ const App = () => {
           },
         }}>
         <Tabs.Screen
-          name="Credito"
+          name="Home"
           component={CreditStack}
           options={{
             tabBarIcon: ({size, color}) => (
@@ -40,8 +40,8 @@ const App = () => {
         />
 
         <Tabs.Screen
-          name="Favorites"
-          component={FavoritesStack}
+          name="Saved Credits"
+          component={SavedCreditStack}
           options={{
             tabBarIcon: ({size, color}) => (
               <Image

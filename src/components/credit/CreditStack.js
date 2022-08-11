@@ -16,9 +16,9 @@ const CreditStack = () => {
         },
         headerTintColor: Colors.white,
       }}>
-      <Stack.Screen name="Simulador de credito" component={CreditScreen} />
+      <Stack.Screen name="Finance Simulator" component={CreditScreen} />
 
-      <Stack.Screen name="CoinDetail" component={CoinDetailScreen} />
+      <Stack.Screen name="Amortization Table" component={CoinDetailScreen} />
     </Stack.Navigator>
   );
 };

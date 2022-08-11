@@ -1,11 +1,11 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import FavoritesScreen from './FavoritesScreen';
+import SavedCreditScreen from './SavedCreditScreen';
 import Colors from 'credit/src/res/colors';
 
 const Stack = createStackNavigator();
 
-const FavoritesStack = () => {
+const SavedCreditStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -15,9 +15,9 @@ const FavoritesStack = () => {
         },
         headerTintColor: Colors.white,
       }}>
-      <Stack.Screen name="StackFavorites" component={FavoritesScreen} />
+      <Stack.Screen name="Credits List" component={SavedCreditScreen} />
     </Stack.Navigator>
   );
 };
 
-export default FavoritesStack;
+export default SavedCreditStack;

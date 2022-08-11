@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const FavoritesEmptyState = () => {
+const SavedCreditEmptyState = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>you don't have any favorite yet</Text>
+      <Text style={styles.text}>you don't have any credits yet</Text>
     </View>
   );
 };
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FavoritesEmptyState;
+export default SavedCreditEmptyState;
